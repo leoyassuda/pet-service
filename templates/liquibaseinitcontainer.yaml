@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dev-liquibaseinitcontainer-ms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dev-liquibaseinitcontainer-ms
+  template:
+    metadata:
+      labels:
+        app: dev-liquibaseinitcontainer-ms
+        version: latest
+    spec:
+      nodeSelector:
+      #        environment: {{ .Release.Name }}
+      containers:
+        - name: dev-liquibaseinitcontainer-ms
+          image: pet-service:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              memory: "2000M"
+            requests:
+              memory: "800Mi"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_CONNECTION_IP
+              value: dev-postgres
+            - name: LIQUIBASE_ENABLED
+              value: "false"
+      initContainers:
+        - name: liquibase
+          image: liquibase:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              memory: "2000M"
+            requests:
+              memory: "200Mi"
+          env:
+            - name: DB_URL
+              value: jdbc:postgresql://${DB_URL}:5432/${DB_NAME}
+            - name: DB_USERNAME
+              value: root
+            - name: DB_PASSWORD
+              value: password
+            - name: ENV
+              value: dev

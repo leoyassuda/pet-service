@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20211129-01
+      author: LeoYassuda
+      changes:
+        - createTable:
+            tableName: pet
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pet_pkey
+                    nullable: false
+                  name: id
+                  type: UUID
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: breed
+                  type: VARCHAR(255)
