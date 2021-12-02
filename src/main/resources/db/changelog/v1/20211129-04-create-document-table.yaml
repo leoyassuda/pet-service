@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20211129-04
+      author: LeoYassuda
+      changes:
+        - createTable:
+            tableName: document
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: document_pkey
+                    nullable: false
+                  name: id
+                  type: UUID
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: type
+                  type: VARCHAR(255)
+              - column:
+                  name: value
+                  type: VARCHAR(255)

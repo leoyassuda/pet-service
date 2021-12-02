@@ -17,7 +17,7 @@ spec:
       #        environment: {{ .Release.Name }}
       containers:
         - name: dev-liquibaseinitcontainer-ms
-          image: pet-service:latest
+          image: leoyassuda/pet-service:latest
           imagePullPolicy: IfNotPresent
           resources:
             limits:
@@ -42,10 +42,10 @@ spec:
               memory: "200Mi"
           env:
             - name: DB_URL
-              value: jdbc:postgresql://${DB_URL}:5432/${DB_NAME}
+              value: jdbc:postgresql://localhost:5432/petdb
             - name: DB_USERNAME
-              value: root
+              value: doggo
             - name: DB_PASSWORD
-              value: password
+              value: roufrouf
             - name: ENV
               value: dev

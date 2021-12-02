@@ -4,9 +4,13 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.UUID;
@@ -17,7 +21,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Entity
 public class Pet implements Serializable {
+
     @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", nullable = false)
     private UUID id;
 
@@ -26,6 +33,10 @@ public class Pet implements Serializable {
 
     @Column(name = "breed")
     private String breed;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "size")
+    private Size size;
 
     @Override
     public boolean equals(Object o) {

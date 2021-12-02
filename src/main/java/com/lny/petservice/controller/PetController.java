@@ -14,15 +14,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/pets/")
+@RequestMapping("/pets")
 public class PetController {
 
     private final PetService petService;
+
+    @GetMapping
+    public ResponseEntity<List<PetResponseDto>> getPets() {
+        log.info("Getting all pets");
+        return ResponseEntity.ok(petService.getAllPets());
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<PetResponseDto> getPet(@PathVariable(value = "id") UUID id) {

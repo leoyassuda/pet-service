@@ -7,6 +7,7 @@ import com.lny.petservice.repository.PetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -27,4 +28,8 @@ public class PetService {
         return petMapper.toDto(pet);
     }
 
+    public List<PetResponseDto> getAllPets() {
+        var pets = petRepository.findAll();
+        return petMapper.toDto(pets);
+    }
 }

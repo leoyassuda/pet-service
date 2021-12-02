@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20211129-03
+      author: LeoYassuda
+      changes:
+        - createTable:
+            tableName: user
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: user_pkey
+                    nullable: false
+                  name: id
+                  type: UUID
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: lastname
+                  type: VARCHAR(255)
