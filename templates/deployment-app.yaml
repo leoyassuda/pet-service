@@ -39,8 +39,26 @@ spec:
               value: doggo
             - name: DB_CONNECTION_PASSWORD
               value: roufrouf
-#            - name: LIQUIBASE_ENABLED
-#              value: "false"
+            - name: LIQUIBASE_ENABLED
+              value: "false"
+            - name: ENV
+              value: dev
+      initContainers:
+        - name: liquibase
+          image: leoyassuda/liquibase:latest
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "2000M"
+            requests:
+              memory: "200Mi"
+          env:
+            - name: DB_URL
+              value: jdbc:postgresql://postgres-service:5432/petdb?currentSchema=public
+            - name: DB_USERNAME
+              value: doggo
+            - name: DB_PASSWORD
+              value: roufrouf
 ---
 apiVersion: v1
 kind: Service
@@ -59,6 +77,6 @@ metadata:
   name: postgres-service
 subsets:
   - addresses:
-      - ip: 172.23.0.1
+      - ip: 172.23.0.1 # Ip founded in running container postgres docker network
     ports:
       - port: 5432

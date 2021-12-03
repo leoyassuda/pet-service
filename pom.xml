@@ -76,6 +76,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.5.13</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -118,27 +123,6 @@
                             <version>${lombok.version}</version>
                         </path>
                     </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>${dockerfile-maven-version}</version>
-                <!--				<executions>-->
-                <!--					<execution>-->
-                <!--						<id>default</id>-->
-                <!--						<goals>-->
-                <!--							<goal>build</goal>-->
-                <!--							<goal>push</goal>-->
-                <!--						</goals>-->
-                <!--					</execution>-->
-                <!--				</executions>-->
-                <configuration>
-                    <repository>spotify/foobar</repository>
-                    <tag>${project.version}</tag>
-                    <buildArgs>
-                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-                    </buildArgs>
                 </configuration>
             </plugin>
         </plugins>

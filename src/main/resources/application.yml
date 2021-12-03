@@ -17,4 +17,6 @@ spring:
       ddl-auto: validate
   liquibase:
     enabled: ${LIQUIBASE_ENABLED:true}
-    change-log: classpath:db/changelog/db-changelog.yaml
+    change-log: classpath:db/changelog/db-changelog-${ENV:local}.yaml
+springdoc:
+  swagger-ui.path: /swagger-ui.html
