@@ -163,9 +163,53 @@ Using a client, check the database:
 
 TODO: Describe swagger documentation here
 
+## Utils
+
+Some util commands
+
+#### create image using maven
+mvn spring-boot:build-image -Dspring-boot.build-image.imageName=leoyassuda/pet-service
+
+#### push image
+```bash
+docker push leoyassuda/pet-service
+```
+
+#### tail logs pod last 100 lines
+```bash
+kubectl logs --tail=100 -f <podName>
+```
+
+#### apply deployment kubernetes
+```bash
+kubectl apply -f templates/deployment-app.yaml
+```
+
+#### kube restart deployment
+```bash
+kubectl rollout restart deployment pet-app
+```
+
+#### build liquibase image
+```bash
+docker build -f LiquibaseDockerfile -t liquibase:latest .
+```
+
+#### set scale
+```bash
+kubectl scale deployment/pet-app --replicas=0
+```
+
+#### create docker config auth
+```bash
+kubectl create secret generic regcred \
+  --from-file=.dockerconfigjson=<path/to/.docker/config.json> \
+  --type=kubernetes.io/dockerconfigjson
+```
+
 ## References
 
-TODO: Insert link references here 
+TODO: Insert and describe links references here
 
 ---
 

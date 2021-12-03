@@ -40,7 +40,7 @@ spec:
             - name: DB_CONNECTION_PASSWORD
               value: roufrouf
             - name: LIQUIBASE_ENABLED
-              value: "false"
+              value: "false" # Boolean to enable or disable liquibase running in the app startup
             - name: ENV
               value: dev
       initContainers:
@@ -59,6 +59,8 @@ spec:
               value: doggo
             - name: DB_PASSWORD
               value: roufrouf
+            - name: ENV
+              value: dev # ENV to identify how liquibase will work, including what changelog file to use
 ---
 apiVersion: v1
 kind: Service
@@ -74,7 +76,7 @@ spec:
 apiVersion: v1
 kind: Endpoints
 metadata:
-  name: postgres-service
+  name: postgres-service # Service to bridge connection outside kube context and see postgres container running in separate docker
 subsets:
   - addresses:
       - ip: 172.23.0.1 # Ip founded in running container postgres docker network

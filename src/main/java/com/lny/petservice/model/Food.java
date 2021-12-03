@@ -1,31 +1,27 @@
 package com.lny.petservice.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 @Entity
-public class Pet implements Serializable {
+public class Food implements Serializable {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -36,17 +32,9 @@ public class Pet implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "breed")
-    private String breed;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "size")
-    private Size size;
-
-    @OneToMany(mappedBy = "pet", fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("user")
-    @ToString.Exclude
-    private Set<Food> foods = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pet_id")
+    private Pet pet;
 
     @Override
     public boolean equals(Object o) {
@@ -54,13 +42,13 @@ public class Pet implements Serializable {
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        Pet pet = (Pet) o;
+        Food food = (Food) o;
 
-        return new org.apache.commons.lang3.builder.EqualsBuilder().append(id, pet.id).append(name, pet.name).append(breed, pet.breed).isEquals();
+        return new EqualsBuilder().append(id, food.id).append(name, food.name).isEquals();
     }
 
     @Override
     public int hashCode() {
-        return new org.apache.commons.lang3.builder.HashCodeBuilder(17, 37).append(id).append(name).append(breed).toHashCode();
+        return new HashCodeBuilder(17, 37).append(id).append(name).toHashCode();
     }
 }

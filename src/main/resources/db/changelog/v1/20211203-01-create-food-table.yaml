@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20211203-01
+      author: LeoYassuda
+      changes:
+        - createTable:
+            tableName: food
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: food_pkey
+                    nullable: false
+                  name: id
+                  type: UUID
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: pet_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_food_pet
+                    references: pet(id)
+        - addColumn:
+            tableName: pet
+            columns:
+              - column:
+                  name: food_id
+                  type: UUID
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_pet_food
+                    references: food(id)
