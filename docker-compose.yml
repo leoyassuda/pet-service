@@ -1,7 +1,6 @@
 services:
   database:
     image: 'postgres:latest'
-    restart: always
     ports:
       - 5432:5432
     env_file: .env
@@ -10,6 +9,5 @@ services:
 
   adminer:
     image: adminer
-    restart: always
     ports:
       - 8888:8080
