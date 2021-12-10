@@ -2,6 +2,11 @@ databaseChangeLog:
   - changeSet:
       id: 20211129-02
       author: LeoYassuda
+      logicalFilePath: changelog/v1
+      comment: Create Pet Table
+      created: '2021-11-29'
+      validCheckSum:
+        - id
       changes:
         - addColumn:
             tableName: pet

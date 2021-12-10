@@ -3,9 +3,9 @@
 A simple project to study some kubernetes features using a spring-boot application and postgres.
 
 For this propose, it will be created a deployment with some pods and avoiding a lock database caused by the Liquibase
-framework. It happens because liquibase inside the application start migrations tasks and the first one is lock our 
-database, in parallel others pods starts the same steps and could throw an exception or falling through the deployment 
-error. 
+framework. It happens because liquibase inside the application start migrations tasks and the first one is lock our
+database, in parallel others pods starts the same steps and could throw an exception or falling through the deployment
+error.
 
 Here the focus is on the architecture, so if you see the application code, you will see a simples api.
 
@@ -61,7 +61,7 @@ volumes:
 ```
 
 > **Optional** - If you do not want to persist data, just comment both lines.
-> 
+>
 > ⚠️ But every time you stop and start the image, the database will be empty.
 
 Other service in `docker-compose` is _adminer_. It is a simple web database client.
@@ -153,11 +153,9 @@ kubectl logs --tail=100 -f <podName> -c liquibase
 Using a client, check the database:
 
 - Before migration
-  - ![Database structure before migration](img/postgres-before-migration.png "Postgres before migration")
+    - ![Database structure before migration](img/postgres-before-migration.png "Postgres before migration")
 - After migration
-  - ![Database structure after migration](img/postgres-after-migration-liquibase-ok.png "Postgres after migration")
-
-
+    - ![Database structure after migration](img/postgres-after-migration-liquibase-ok.png "Postgres after migration")
 
 ## API Document
 
@@ -168,39 +166,47 @@ TODO: Describe swagger documentation here
 Some util commands
 
 #### create image using maven
+
 mvn spring-boot:build-image -Dspring-boot.build-image.imageName=leoyassuda/pet-service
 
 #### push image
+
 ```bash
 docker push leoyassuda/pet-service
 ```
 
 #### tail logs pod last 100 lines
+
 ```bash
 kubectl logs --tail=100 -f <podName>
 ```
 
 #### apply deployment kubernetes
+
 ```bash
 kubectl apply -f templates/deployment-app.yaml
 ```
 
 #### kube restart deployment
+
 ```bash
 kubectl rollout restart deployment pet-app
 ```
 
 #### build liquibase image
+
 ```bash
 docker build -f LiquibaseDockerfile -t liquibase:latest .
 ```
 
 #### set scale
+
 ```bash
 kubectl scale deployment/pet-app --replicas=0
 ```
 
 #### create docker config auth
+
 ```bash
 kubectl create secret generic regcred \
   --from-file=.dockerconfigjson=<path/to/.docker/config.json> \

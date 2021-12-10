@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: # id in format yyyymmdd-numberVersion -> 20211231-01
+      author: # author's name
+      logicalFilePath: # static value -> changelog/v1
+      comment: # description your changes
+      created: # date as string in format yyyy-mm-dd -> '2021-12-31'
+      validCheckSum: # array to calculate md5sum
+        - id # static value -> only the id
+      changes: # the database changes
+      # for more examples read on https://docs.liquibase.com/concepts/basic/changeset.html?Highlight=changes
+        - createTable:
+            tableName: my-table-name
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: my-primaryKey-name_pkey
+                    nullable: false
+                  name: id
+                  type: UUID
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: breed
+                  type: VARCHAR(255)
