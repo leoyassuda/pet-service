@@ -2,7 +2,7 @@ databaseChangeLog:
   - changeSet:
       id: 20211129-01
       author: LeoYassuda
-      logicalFilePath: changelog/v1
+      logicalFilePath: changelog/v1/20211129-01-create-pet-table.yaml
       comment: Create Pet Table
       created: '2021-11-29'
       validCheckSum:

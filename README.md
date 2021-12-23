@@ -89,7 +89,7 @@ in parameter `imageName` set your name image.
 Build liquibase image
 
 ```bash
-docker build -f LiquibaseDockerfile -t leoyassuda/liquibase:latest .
+docker build -f liquibase.dockerfile -t leoyassuda/liquibase:latest .
 ```
 
 Start Postgres
@@ -196,7 +196,7 @@ kubectl rollout restart deployment pet-app
 #### build liquibase image
 
 ```bash
-docker build -f LiquibaseDockerfile -t liquibase:latest .
+docker build -f liquibase.dockerfile -t liquibase:latest .
 ```
 
 #### set scale

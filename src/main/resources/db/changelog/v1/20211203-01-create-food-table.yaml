@@ -2,8 +2,8 @@ databaseChangeLog:
   - changeSet:
       id: 20211203-01
       author: LeoYassuda
-      logicalFilePath: changelog/v1
-      comment: Create Pet Table
+      logicalFilePath: changelog/v1/20211203-01-create-food-table.yaml
+      comment: Create Food Table
       created: '2021-11-29'
       validCheckSum:
         - id

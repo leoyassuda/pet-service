@@ -54,13 +54,11 @@ spec:
               memory: "200Mi"
           env:
             - name: DB_URL
-              value: jdbc:postgresql://postgres-service:5432/petdb?currentSchema=public
+              value: jdbc:postgresql://postgres-service:5432/petdb
             - name: DB_USERNAME
               value: doggo
             - name: DB_PASSWORD
               value: roufrouf
-            - name: ENV
-              value: dev # ENV to identify how liquibase will work, including what changelog file to use
 ---
 apiVersion: v1
 kind: Service
@@ -81,4 +79,5 @@ subsets:
   - addresses:
       - ip: 172.23.0.1 # Ip founded in running container postgres docker network
     ports:
-      - port: 5432
+      - port: 5445
+      - port: 5446

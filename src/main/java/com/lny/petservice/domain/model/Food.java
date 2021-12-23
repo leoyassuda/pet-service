@@ -1,4 +1,4 @@
-package com.lny.petservice.model;
+package com.lny.petservice.domain.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

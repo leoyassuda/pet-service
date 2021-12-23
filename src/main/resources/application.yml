@@ -1,22 +1,59 @@
 server:
-  port : ${SERVER_APP_PORT:8080}
+  port: ${SERVER_APP_PORT:8080}
 spring:
   datasource:
-    hikari:
-      connectionTimeout: 30000
-      idleTimeout: 600000
-      maxLifetime: 1800000
-    url: jdbc:postgresql://${DB_CONNECTION_IP:localhost}:${DB_CONNECTION_PORT:5432}/petdb
-    username: ${DB_CONNECTION_USERNAME:user}
-    password: ${DB_CONNECTION_PASSWORD:password}
+    schema: public
   jpa:
     open-in-view: false
     show-sql: false
     generate-ddl: false
     hibernate:
+      default-schema: public
       ddl-auto: validate
   liquibase:
     enabled: ${LIQUIBASE_ENABLED:true}
-    change-log: classpath:db/changelog/db-changelog-${ENV:local}.yaml
+    change-log: db/changelog/db-changelog.yaml
+    default-schema: public
+    liquibase-schema: public
+    url: jdbc:postgresql://${DB_CONNECTION_IP:localhost}:${DB_CONNECTION_PORT:5445}/petdb?currentSchema=public
+    user: ${DB_CONNECTION_USERNAME:user}
+    password: ${DB_CONNECTION_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
+
+datasource:
+  write:
+    jdbc-url: jdbc:postgresql://${DB_CONNECTION_IP:localhost}:${DB_CONNECTION_PORT:5445}/petdb?currentSchema=public
+    username: ${DB_CONNECTION_USERNAME:user}
+    password: ${DB_CONNECTION_PASSWORD:password}
+    platform: postgresql
+    hikari:
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      maximum-pool-size: 10
+      minimum-idle: 5
+      pool-name: WriteHikariPool
+      schema: public
+  read:
+    jdbc-url: jdbc:postgresql://${DB_CONNECTION_IP:localhost}:${DB_CONNECTION_PORT:5446}/petdb?currentSchema=public
+    username: ${DB_CONNECTION_USERNAME:user}
+    password: ${DB_CONNECTION_PASSWORD:password}
+    platform: postgresql
+    hikari:
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      maximum-pool-size: 10
+      minimum-idle: 5
+      pool-name: WriteHikariPool
+      schema: public
+
 springdoc:
   swagger-ui.path: /swagger-ui.html
+
+liquibase:
+  enabled: ${LIQUIBASE_ENABLED:true}
+  change-log: db/changelog/db-changelog.yaml
+  default-schema: public
+  liquibase-schema: public
+  url: jdbc:postgresql://${DB_CONNECTION_IP:localhost}:${DB_CONNECTION_PORT:5445}/petdb?currentSchema=public
