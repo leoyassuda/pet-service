@@ -6,12 +6,8 @@ services:
       - "5445:5432"
     volumes:
       - mdata:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=doggo
-      - POSTGRES_PASSWORD=rouf1234
-      - POSTGRES_DB=petdb
-      - PG_REP_USER=rep
-      - PG_REP_PASSWORD=123456
+    env_file:
+      - .env.datasource
     networks:
       - bridge-petwork
 
@@ -21,12 +17,8 @@ services:
       - "5446:5432"
     volumes:
       - sdata:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=doggo
-      - POSTGRES_PASSWORD=rouf1234
-      - POSTGRES_DB=petdb
-      - PG_REP_USER=rep
-      - PG_REP_PASSWORD=123456
+    env_file:
+      - .env.datasource
     networks:
       - bridge-petwork
 
@@ -34,9 +26,8 @@ services:
     image: dpage/pgadmin4
     ports:
       - "8888:80"
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@pet.com
-      - PGADMIN_DEFAULT_PASSWORD=adminadmin
+    env_file:
+      - .env.pgadmin
     networks:
       - bridge-petwork
 
