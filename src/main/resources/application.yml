@@ -49,7 +49,10 @@ datasource:
       schema: public
 
 springdoc:
-  swagger-ui.path: /swagger-ui.html
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs
 
 liquibase:
   enabled: ${LIQUIBASE_ENABLED:true}
@@ -57,3 +60,7 @@ liquibase:
   default-schema: public
   liquibase-schema: public
   url: jdbc:postgresql://${DB_CONNECTION_IP:localhost}:${DB_CONNECTION_PORT:5445}/petdb?currentSchema=public
+
+data:
+  repository:
+    pageSize: 10

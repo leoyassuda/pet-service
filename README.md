@@ -25,7 +25,7 @@ Look in the resource folder, all the migration files, fell free to create yours 
 ## Cloning the repo
 
 ```bash
-git clone https://github.com/leoyassuda/pet-service.git
+git clone https://github.com/leoyassuda/petEntity-service.git
 ```
 
 ## Pre-requirements
@@ -81,7 +81,7 @@ mvn clean install
 build app image
 
 ```bash
-mvn spring-boot:build-image -Dspring-boot.build-image.imageName=leoyassuda/pet-service
+mvn spring-boot:build-image -Dspring-boot.build-image.imageName=leoyassuda/petEntity-service
 ```
 
 in parameter `imageName` set your name image.
@@ -167,12 +167,12 @@ Some util commands
 
 #### create image using maven
 
-mvn spring-boot:build-image -Dspring-boot.build-image.imageName=leoyassuda/pet-service
+mvn spring-boot:build-image -Dspring-boot.build-image.imageName=leoyassuda/petEntity-service
 
 #### push image
 
 ```bash
-docker push leoyassuda/pet-service
+docker push leoyassuda/petEntity-service
 ```
 
 #### tail logs pod last 100 lines
@@ -190,7 +190,7 @@ kubectl apply -f templates/deployment-app.yaml
 #### kube restart deployment
 
 ```bash
-kubectl rollout restart deployment pet-app
+kubectl rollout restart deployment petEntity-app
 ```
 
 #### build liquibase image
@@ -202,7 +202,7 @@ docker build -f liquibase.dockerfile -t liquibase:latest .
 #### set scale
 
 ```bash
-kubectl scale deployment/pet-app --replicas=0
+kubectl scale deployment/petEntity-app --replicas=0
 ```
 
 #### create docker config auth
