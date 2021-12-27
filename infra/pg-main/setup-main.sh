@@ -6,7 +6,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 CREATE USER $PG_REP_USER REPLICATION LOGIN CONNECTION LIMIT 100 ENCRYPTED PASSWORD '$PG_REP_PASSWORD';
 CREATE USER postgres;
 EOSQL
-cat >> ${PGDATA}/postgresql.conf <<EOF
+cat >> "${PGDATA}"/postgresql.conf <<EOF
 wal_level = hot_standby
 archive_mode = on
 archive_command = 'cd .'

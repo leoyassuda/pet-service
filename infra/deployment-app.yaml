@@ -35,14 +35,22 @@ spec:
           env:
             - name: DB_CONNECTION_IP
               value: postgres-service
+            - name: DB_CONNECTION_WRITE_PORT
+              value: 5445
+            - name: DB_CONNECTION_READ_PORT
+              value: 5446
             - name: DB_CONNECTION_USERNAME
-              value: doggo
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secrets
+                  key: username
             - name: DB_CONNECTION_PASSWORD
-              value: roufrouf
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secrets
+                  key: password
             - name: LIQUIBASE_ENABLED
               value: "false" # Boolean to enable or disable liquibase running in the app startup
-            - name: ENV
-              value: dev
       initContainers:
         - name: liquibase
           image: leoyassuda/liquibase:latest
@@ -54,11 +62,17 @@ spec:
               memory: "200Mi"
           env:
             - name: DB_URL
-              value: jdbc:postgresql://postgres-service:5432/petdb
+              value: jdbc:postgresql://postgres-service:5445/petdb
             - name: DB_USERNAME
-              value: doggo
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secrets
+                  key: username
             - name: DB_PASSWORD
-              value: roufrouf
+              valueFrom:
+                secretKeyRef:
+                  name: pg-secrets
+                  key: password
 ---
 apiVersion: v1
 kind: Service
@@ -68,8 +82,11 @@ spec:
   type: ClusterIP
   ports:
     - protocol: TCP
-      port: 5432
-      targetPort: 5432
+      port: 5445
+      targetPort: 5445
+    - protocol: TCP
+      port: 5446
+      targetPort: 5446
 ---
 apiVersion: v1
 kind: Endpoints
@@ -77,7 +94,7 @@ metadata:
   name: postgres-service # Service to bridge connection outside kube context and see postgres container running in separate docker
 subsets:
   - addresses:
-      - ip: 172.23.0.1 # Ip founded in running container postgres docker network
+      - ip: 172.26.0.1 # Ip founded in running container postgres docker network
     ports:
       - port: 5445
       - port: 5446

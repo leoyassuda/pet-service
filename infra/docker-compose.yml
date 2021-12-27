@@ -16,7 +16,7 @@ services:
     ports:
       - "5446:5432"
     volumes:
-      - sdata:/var/lib/postgresql/data
+      - rdata:/var/lib/postgresql/data
     env_file:
       - .env.datasource
     networks:
@@ -38,7 +38,7 @@ services:
 
 volumes:
   mdata:
-  sdata:
+  rdata:
 
 networks:
   bridge-petwork:
