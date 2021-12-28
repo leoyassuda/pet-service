@@ -1,0 +1,45 @@
+services:
+
+  pg_main_1:
+    build: ./pg-main
+    ports:
+      - "5445:5432"
+    volumes:
+      - mdata:/var/lib/postgresql/data
+    env_file:
+      - .env.datasource
+    networks:
+      - bridge-petwork
+
+  pg_replica_1:
+    build: ./pg-replica
+    ports:
+      - "5446:5432"
+    volumes:
+      - rdata:/var/lib/postgresql/data
+    env_file:
+      - .env.datasource
+    networks:
+      - bridge-petwork
+
+#  adminer:
+#    image: adminer
+#    ports:
+#      - 8888:8080
+
+#  pg_admin:
+#    image: dpage/pgadmin4
+#    ports:
+#      - "8888:80"
+#    env_file:
+#      - .env.pgadmin
+#    networks:
+#      - bridge-petwork
+
+volumes:
+  mdata:
+  rdata:
+
+networks:
+  bridge-petwork:
+    driver: bridge

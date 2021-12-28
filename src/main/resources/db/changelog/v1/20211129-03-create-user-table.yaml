@@ -2,8 +2,8 @@ databaseChangeLog:
   - changeSet:
       id: 20211129-03
       author: LeoYassuda
-      logicalFilePath: changelog/v1
-      comment: Create Pet Table
+      logicalFilePath: changelog/v1/20211129-03-create-user-table.yaml
+      comment: Create User Table
       created: '2021-11-29'
       validCheckSum:
         - id

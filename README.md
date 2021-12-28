@@ -1,13 +1,14 @@
 # Pet-Service
 
-A simple project to study some kubernetes features using a spring-boot application and postgres.
+A project to study hexagonal architecture, some kubernetes features using a spring-boot application and postgres as a
+write/read mode.
 
 For this propose, it will be created a deployment with some pods and avoiding a lock database caused by the Liquibase
 framework. It happens because liquibase inside the application start migrations tasks and the first one is lock our
 database, in parallel others pods starts the same steps and could throw an exception or falling through the deployment
 error.
 
-Here the focus is on the architecture, so if you see the application code, you will see a simples api.
+Here the focus is on the architecture.
 
 Look in the resource folder, all the migration files, fell free to create yours or modifying for tests.
 
@@ -17,6 +18,7 @@ Look in the resource folder, all the migration files, fell free to create yours 
 
 * [Maven](https://maven.apache.org/)
 * [Spring](https://spring.io/)
+* [Liquibase](https://www.liquibase.com/)
 * [SpringDoc-OpenApi](https://springdoc.org/)
 * [Docker](https://www.docker.com/)
 * [Kubernetes](https://kubernetes.io/)
@@ -41,34 +43,34 @@ You will need:
 
 This project is based on Docker and Kubernetes.
 
-create a `.env` file in root of project. you can create using the example file `.env.sample`
+In `infra` folder exists all files to set up the development environment.
 
-in `.env` you need to set your values.
+create a `.env.datasource` and `.env.pgadmin` files in infra folder. You can create following the example files `.env`
+in `templates` folder.
 
-All properties will be read in `docker-compose` file.
+For kubernetes, open `secret.yaml` and put your credentials replacing both string data values for the same value as you
+config in `.env` files.
 
 ## Development
 
 ### Docker-Compose (Postgres)
 
-Adjust `docker-compose` file.
+There are two services commented:
 
-Change in line 9 and set where _Postgres_ will create the database.
+- adminer
+    - a simple visual client to access the database.
+    - ![an image showing the login the page of adminer](img/adminer-login-page.png "adminer-login-page")
+- pg_admin:
+    - the power tool to admin Postgres Instances.
+    - ![an image showing the login the page of pg-admin](img/pg-admin-login.png "pg admin login-page")
+    - to login, depends on the `env.pgadmin` file.
 
-```yaml
-volumes:
-  - ~/workspace/pgdata:/var/lib/postgresql/data
-```
+Both are optional to use.
 
-> **Optional** - If you do not want to persist data, just comment both lines.
->
-> ⚠️ But every time you stop and start the image, the database will be empty.
+The `docker-compose` reference two folders `pg-main` and `pg-replica` they are used to building and configure the system
+replication between databases.
 
-Other service in `docker-compose` is _adminer_. It is a simple web database client.
-
-![an image showing the login the page of adminer](img/adminer-login-page.png "adminer-login-page")
-
-TODO: More details and instructions
+> ⚠ **IMPORTANT** - Volume is used to replicate from master to replication using async wal config.
 
 ## Running
 
@@ -84,12 +86,16 @@ build app image
 mvn spring-boot:build-image -Dspring-boot.build-image.imageName=leoyassuda/pet-service
 ```
 
-in parameter `imageName` set your name image.
+in parameter `imageName` set your image name.
 
 Build liquibase image
 
+In `infra` folder.
+
+Open `liquibase.properties` and set all values according the main Postgres instance.
+
 ```bash
-docker build -f LiquibaseDockerfile -t leoyassuda/liquibase:latest .
+docker build -f liquibase.dockerfile -t leoyassuda/liquibase:latest ../
 ```
 
 Start Postgres
@@ -98,21 +104,46 @@ Start Postgres
 docker-compose up
 ```
 
+Create kubernetes secrets
+
+Set values in `secret.yaml`
+
+Execute command
+
+```shell
+kubectl create -f secret.yaml
+```
+
 Apply kubernetes deployment
 
 > Check some values in `deployment-app.yaml`
 
-In lines 31 and 48, set the same images name that was built previously.
+Pay attention in Deployment at `spec.containers.image` the same image name that you built before
 
 If you pushed the images to docker hub, may you need to set the context for kubernetes can pull images.
 
-First login
+Other point to set value is the network, after docker-compose up with success. Find the gateway to set in your
+deployment.
+
+```shell
+docker network inspect <network_name> 
+```
+
+Or with JQ installed previous
+
+```shell
+docker network inspect infra_bridge-petwork | jq '.[0].IPAM.Config[0].Gateway'
+```
+
+> shell print -> "172.26.0.1"
+
+Login in terminal
 
 ```bash
 docker login
 ```
 
-Then pass context to kubernetes
+Then pass (docker) context to kubernetes
 
 ```bash
 kubectl create secret generic regcred \
@@ -123,7 +154,7 @@ kubectl create secret generic regcred \
 Start the deployment
 
 ```bash
-kubectl apply -f templates/deployment-app.yaml
+kubectl apply -f infra/deployment-app.yaml
 ```
 
 To follow pods status
@@ -167,7 +198,9 @@ Some util commands
 
 #### create image using maven
 
+```shell
 mvn spring-boot:build-image -Dspring-boot.build-image.imageName=leoyassuda/pet-service
+```
 
 #### push image
 
@@ -184,7 +217,7 @@ kubectl logs --tail=100 -f <podName>
 #### apply deployment kubernetes
 
 ```bash
-kubectl apply -f templates/deployment-app.yaml
+kubectl apply -f infra/deployment-app.yaml
 ```
 
 #### kube restart deployment
@@ -196,7 +229,7 @@ kubectl rollout restart deployment pet-app
 #### build liquibase image
 
 ```bash
-docker build -f LiquibaseDockerfile -t liquibase:latest .
+docker build -f liquibase.dockerfile -t liquibase:latest .
 ```
 
 #### set scale
@@ -213,9 +246,17 @@ kubectl create secret generic regcred \
   --type=kubernetes.io/dockerconfigjson
 ```
 
-## References
+#### inspect using JQ
 
-TODO: Insert and describe links references here
+```bash
+docker network inspect infra_bridge-petwork | jq '.[0].IPAM.Config[0].Gateway'
+```
+
+#### export DB Ip Connection
+
+```bash
+export DB_CONNECTION_IP=$(docker network inspect infra_bridge-petwork | jq -r '.[0].IPAM.Config[0].Gateway')
+```
 
 ---
 
