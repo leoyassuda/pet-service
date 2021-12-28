@@ -92,6 +92,8 @@ Build liquibase image
 
 In `infra` folder.
 
+Open `liquibase.properties` and set all values according the main Postgres instance.
+
 ```bash
 docker build -f liquibase.dockerfile -t leoyassuda/liquibase:latest ../
 ```
@@ -152,7 +154,7 @@ kubectl create secret generic regcred \
 Start the deployment
 
 ```bash
-kubectl apply -f templates/deployment-app.yaml
+kubectl apply -f infra/deployment-app.yaml
 ```
 
 To follow pods status
@@ -196,7 +198,9 @@ Some util commands
 
 #### create image using maven
 
+```shell
 mvn spring-boot:build-image -Dspring-boot.build-image.imageName=leoyassuda/pet-service
+```
 
 #### push image
 
@@ -213,7 +217,7 @@ kubectl logs --tail=100 -f <podName>
 #### apply deployment kubernetes
 
 ```bash
-kubectl apply -f templates/deployment-app.yaml
+kubectl apply -f infra/deployment-app.yaml
 ```
 
 #### kube restart deployment
@@ -242,14 +246,17 @@ kubectl create secret generic regcred \
   --type=kubernetes.io/dockerconfigjson
 ```
 
-## References
+#### inspect using JQ
 
-* Jq reference to use with examples
-  \- [JQ](https://www.linode.com/docs/guides/using-jq-to-process-json-on-the-command-line/)
-* Liquibase/Kubernetes \- [Liquibase-Blog](https://www.liquibase.com/blog/using-liquibase-in-kubernetes)
-* Multiple DataSources
-  \- [Multi-DS](https://ehsaniara.medium.com/spring-boot-2-with-multiple-datasource-for-postgres-data-replication-182c89124f54)
-* Hexagonal Arch \- [Hexagonal](https://reflectoring.io/spring-hexagonal/)
+```bash
+docker network inspect infra_bridge-petwork | jq '.[0].IPAM.Config[0].Gateway'
+```
+
+#### export DB Ip Connection
+
+```bash
+export DB_CONNECTION_IP=$(docker network inspect infra_bridge-petwork | jq -r '.[0].IPAM.Config[0].Gateway')
+```
 
 ---
 

@@ -36,9 +36,9 @@ spec:
             - name: DB_CONNECTION_IP
               value: postgres-service
             - name: DB_CONNECTION_WRITE_PORT
-              value: 5445
+              value: "5445"
             - name: DB_CONNECTION_READ_PORT
-              value: 5446
+              value: "5446"
             - name: DB_CONNECTION_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -81,10 +81,12 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - protocol: TCP
+    - name: tcp-write
+      protocol: TCP
       port: 5445
       targetPort: 5445
-    - protocol: TCP
+    - name: tcp-read
+      protocol: TCP
       port: 5446
       targetPort: 5446
 ---
@@ -96,5 +98,9 @@ subsets:
   - addresses:
       - ip: 172.26.0.1 # Ip founded in running container postgres docker network
     ports:
-      - port: 5445
-      - port: 5446
+      - name: tcp-write
+        protocol: TCP
+        port: 5445
+      - name: tcp-read
+        protocol: TCP
+        port: 5446
