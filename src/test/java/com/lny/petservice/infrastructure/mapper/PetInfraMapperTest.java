@@ -4,12 +4,17 @@ import com.lny.petservice.domain.model.Food;
 import com.lny.petservice.domain.model.Pet;
 import com.lny.petservice.infrastructure.adapter.outbound.persistence.entity.FoodEntity;
 import com.lny.petservice.infrastructure.adapter.outbound.persistence.entity.PetEntity;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.IndicativeSentencesGeneration;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,15 +25,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@ExtendWith(MockitoExtension.class)
 @DisplayName("Test Pet mapper in infrastructure objects")
 @IndicativeSentencesGeneration(separator = " -> ")
 class PetInfraMapperTest {
 
     @Spy
-    private FoodInfraMapper foodInfraMapper = Mappers.getMapper(FoodInfraMapper.class);
+    private static FoodInfraMapper foodInfraMapper;
 
     @InjectMocks
     private PetInfraMapper petInfraMapper = Mappers.getMapper(PetInfraMapper.class);
+
+    @BeforeAll
+    static void setUp() {
+        foodInfraMapper = Mockito.spy(Mappers.getMapper(FoodInfraMapper.class));
+    }
 
     @Test
     @DisplayName("Return equals values between Pet Domain and Pet Entity using MapStruct mapper")

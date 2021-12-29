@@ -1,5 +1,6 @@
 package com.lny.petservice.app.adapter.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,7 @@ public class FoodResponseDto {
 
     private UUID id;
     private String name;
+    @JsonIgnore
     private PetResponseDto petResponseDto;
 
 }

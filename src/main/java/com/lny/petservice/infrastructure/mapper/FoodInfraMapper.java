@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Mapper
 public interface FoodInfraMapper {
-    
+
     @Mapping(target = "petEntity", ignore = true)
     FoodEntity toEntity(Food food);
 
