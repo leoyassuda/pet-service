@@ -9,7 +9,7 @@ public enum Size {
 
     private final String value;
 
-    Size(String value){
+    Size(String value) {
         this.value = value;
     }
 
@@ -17,7 +17,7 @@ public enum Size {
         return value;
     }
 
-    public static Stream<Size> stream(){
+    public static Stream<Size> stream() {
         return Stream.of(Size.values());
     }
 }

@@ -1,8 +1,11 @@
 package com.lny.petservice.infrastructure.adapter.outbound.persistence.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
@@ -20,7 +23,10 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "food")
 public class FoodEntity implements Serializable {
@@ -36,6 +42,7 @@ public class FoodEntity implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pet_id")
+    @ToString.Exclude
     private PetEntity petEntity;
 
     @Override

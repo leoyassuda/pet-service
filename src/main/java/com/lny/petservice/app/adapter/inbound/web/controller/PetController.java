@@ -1,9 +1,8 @@
 package com.lny.petservice.app.adapter.inbound.web.controller;
 
-import com.lny.petservice.app.adapter.dto.PetRequestDto;
-import com.lny.petservice.app.adapter.dto.PetResponseDto;
-import com.lny.petservice.domain.mapper.PetDomainMapper;
-import com.lny.petservice.app.adapter.mapper.PetPresenterMapper;
+import com.lny.petservice.app.adapter.dto.request.PetRequestDto;
+import com.lny.petservice.app.adapter.dto.response.PetResponseDto;
+import com.lny.petservice.app.adapter.mapper.PetAppMapper;
 import com.lny.petservice.domain.model.Pet;
 import com.lny.petservice.domain.port.service.PetServicePort;
 import lombok.RequiredArgsConstructor;
@@ -27,26 +26,25 @@ import java.util.UUID;
 @RequestMapping("/pets")
 public class PetController {
 
-    private final PetDomainMapper petDomainMapper;
-    private final PetPresenterMapper petPresenterMapper;
+    private final PetAppMapper petAppMapper;
     private final PetServicePort petServicePort;
 
     @GetMapping
     public ResponseEntity<List<PetResponseDto>> getPets(@RequestParam int page) {
         log.info("Getting all pets");
-        return ResponseEntity.ok(petPresenterMapper.toDto(petServicePort.listPets(page)));
+        return ResponseEntity.ok(petAppMapper.toResponseDto(petServicePort.listPets(page)));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PetResponseDto> getPet(@PathVariable(value = "id") UUID id) {
         log.info("Getting Pet by id {}", id);
-        return ResponseEntity.ok(petPresenterMapper.toDto(petServicePort.getPetById(id)));
+        return ResponseEntity.ok(petAppMapper.toResponseDto(petServicePort.getPetById(id)));
     }
 
     @PostMapping
     public ResponseEntity<PetResponseDto> createPet(@RequestBody @Valid PetRequestDto petRequestDto) {
         log.info("Creating new Pet : {}", petRequestDto);
-        Pet pet = petServicePort.createPet(petDomainMapper.toDomain(petRequestDto));
-        return ResponseEntity.ok(petPresenterMapper.toDto(pet));
+        Pet pet = petServicePort.createPet(petAppMapper.toDomain(petRequestDto));
+        return ResponseEntity.ok(petAppMapper.toResponseDto(pet));
     }
 }

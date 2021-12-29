@@ -1,10 +1,12 @@
 package com.lny.petservice.infrastructure.adapter.outbound.persistence;
 
+import com.lny.petservice.domain.model.Pet;
 import com.lny.petservice.domain.port.repository.PetRepositoryPersistPort;
 import com.lny.petservice.domain.port.repository.PetRepositoryRetrievePort;
 import com.lny.petservice.infrastructure.adapter.outbound.persistence.entity.PetEntity;
 import com.lny.petservice.infrastructure.adapter.outbound.persistence.repository.read.PetReadRepository;
 import com.lny.petservice.infrastructure.adapter.outbound.persistence.repository.write.PetWriteRepository;
+import com.lny.petservice.infrastructure.mapper.PetInfraMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -22,29 +24,32 @@ public class PetDbRepositoryImpl implements PetRepositoryPersistPort, PetReposit
 
     private final PetReadRepository petReadRepository;
     private final PetWriteRepository petWriteRepository;
+    private final PetInfraMapper petInfraMapper;
 
     @Value("${data.repository.pageSize:10}")
     private int pageSize;
 
     @Override
-    public PetEntity save(PetEntity petEntity) {
-        return petWriteRepository.save(petEntity);
+    public Pet save(Pet pet) {
+        PetEntity petSaved = petWriteRepository.save(petInfraMapper.toEntity(pet));
+        return petInfraMapper.toDomain(petSaved);
     }
 
     @Override
-    public void delete(PetEntity petEntity) {
-        petWriteRepository.delete(petEntity);
+    public void delete(Pet pet) {
+        petWriteRepository.delete(petInfraMapper.toEntity(pet));
     }
 
     @Override
-    public Optional<PetEntity> findById(UUID id) {
-        return petReadRepository.findById(id);
+    public Optional<Pet> findById(UUID id) {
+        Optional<PetEntity> petEntity = petReadRepository.findById(id);
+        return petEntity.map(petInfraMapper::toDomain);
     }
 
     @Override
-    public List<PetEntity> getAll(int page) {
+    public List<Pet> getAll(int page) {
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<PetEntity> petEntityPage = petReadRepository.findAll(pageable);
-        return petEntityPage.getContent();
+        return petEntityPage.map(petInfraMapper::toDomain).getContent();
     }
 }

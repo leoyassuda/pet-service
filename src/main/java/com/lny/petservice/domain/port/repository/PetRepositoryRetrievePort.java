@@ -1,6 +1,6 @@
 package com.lny.petservice.domain.port.repository;
 
-import com.lny.petservice.infrastructure.adapter.outbound.persistence.entity.PetEntity;
+import com.lny.petservice.domain.model.Pet;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface PetRepositoryRetrievePort {
 
-    Optional<PetEntity> findById(UUID id);
+    Optional<Pet> findById(UUID id);
 
-    List<PetEntity> getAll(int page);
+    List<Pet> getAll(int page);
 }

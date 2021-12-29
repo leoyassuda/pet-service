@@ -1,4 +1,4 @@
-package com.lny.petservice.domain.model;
+package com.lny.petservice.app.adapter.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,13 +10,13 @@ import java.util.UUID;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class Pet {
+@NoArgsConstructor
+public class PetResponseDto {
 
     private UUID id;
     private String name;
     private String breed;
-    private Set<Food> foodSet;
+    private Set<FoodResponseDto> foodResponseDtoSet;
 
 }

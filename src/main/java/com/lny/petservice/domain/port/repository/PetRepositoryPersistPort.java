@@ -1,11 +1,11 @@
 package com.lny.petservice.domain.port.repository;
 
-import com.lny.petservice.infrastructure.adapter.outbound.persistence.entity.PetEntity;
+import com.lny.petservice.domain.model.Pet;
 
 public interface PetRepositoryPersistPort {
 
-    PetEntity save(PetEntity petEntity);
+    Pet save(Pet pet);
 
-    void delete(PetEntity petEntity);
+    void delete(Pet pet);
 
 }

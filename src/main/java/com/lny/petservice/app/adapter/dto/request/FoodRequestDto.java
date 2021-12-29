@@ -1,22 +1,21 @@
-package com.lny.petservice.domain.model;
+package com.lny.petservice.app.adapter.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
 import java.util.UUID;
 
+
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Pet {
+public class FoodRequestDto {
 
     private UUID id;
     private String name;
-    private String breed;
-    private Set<Food> foodSet;
+    private PetRequestDto petRequestDto;
 
 }

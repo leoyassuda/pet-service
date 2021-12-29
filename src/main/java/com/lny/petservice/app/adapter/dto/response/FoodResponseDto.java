@@ -1,21 +1,20 @@
-package com.lny.petservice.app.adapter.dto;
+package com.lny.petservice.app.adapter.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PetResponseDto implements Serializable {
+@Builder
+public class FoodResponseDto {
 
     private UUID id;
     private String name;
-    private String breed;
+    private PetResponseDto petResponseDto;
 
 }
