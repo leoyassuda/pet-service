@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@DisplayName("Test mapper in infrastructure objects")
+@DisplayName("Test Pet mapper in infrastructure objects")
 @IndicativeSentencesGeneration(separator = " -> ")
 class PetInfraMapperTest {
 

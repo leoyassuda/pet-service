@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 
 import java.util.Set;
 
-@Mapper(uses = PetInfraMapper.class)
+@Mapper
 public interface FoodInfraMapper {
     
     @Mapping(target = "petEntity", ignore = true)
