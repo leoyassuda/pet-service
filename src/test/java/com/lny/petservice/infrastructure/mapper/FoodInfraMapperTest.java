@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@DisplayName("Test Food mapper in infrastructure objects")
+@DisplayName("Test Food mapper in infrastructure module")
 @IndicativeSentencesGeneration(separator = " -> ")
 class FoodInfraMapperTest {
 
@@ -49,7 +49,7 @@ class FoodInfraMapperTest {
 
         Food food1 = foodSet.stream().findAny().orElse(new Food());
         assertTrue(foodEntitySet.stream().anyMatch(foodEntity -> foodEntity.getId().equals(food1.getId())),
-                "Fail to find same UUID between domain list and entity list items");
+                "Fail to find same UUID between domain list and entity list");
 
     }
 
@@ -81,7 +81,7 @@ class FoodInfraMapperTest {
 
         FoodEntity foodEntity = foodEntitySet.stream().findAny().orElse(new FoodEntity());
         assertTrue(foodSet.stream().anyMatch(food -> food.getId().equals(foodEntity.getId())),
-                "Fail to find same UUID between entity list and domain list items");
+                "Fail to find same UUID between entity list and domain list");
 
     }
 

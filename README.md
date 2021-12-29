@@ -1,5 +1,7 @@
 # Pet-Service
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/379a580c3ed6460da13a4a1b10d485c5)](https://www.codacy.com/gh/leoyassuda/pet-service/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=leoyassuda/pet-service&amp;utm_campaign=Badge_Grade)
+
 A project to study hexagonal architecture, some kubernetes features using a spring-boot application and postgres as a
 write/read mode.
 

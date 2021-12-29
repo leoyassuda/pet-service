@@ -7,7 +7,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
-import java.util.Set;
 
 @Mapper(uses = FoodAppMapper.class)
 public interface PetAppMapper {
@@ -16,8 +15,6 @@ public interface PetAppMapper {
     PetResponseDto toResponseDto(Pet pet);
 
     List<PetResponseDto> toResponseDto(List<Pet> petList);
-
-    Set<PetResponseDto> toResponseDto(Set<Pet> petSet);
 
     @Mapping(target = "foodSet", source = "foodRequestDtoSet")
     Pet toDomain(PetRequestDto petRequestDto);

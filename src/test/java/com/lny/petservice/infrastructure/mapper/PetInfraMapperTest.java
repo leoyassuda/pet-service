@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("Test Pet mapper in infrastructure objects")
+@DisplayName("Test Pet mapper in infrastructure module")
 @IndicativeSentencesGeneration(separator = " -> ")
 class PetInfraMapperTest {
 
