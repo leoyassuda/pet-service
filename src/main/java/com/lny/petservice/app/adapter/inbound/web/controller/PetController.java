@@ -7,6 +7,7 @@ import com.lny.petservice.domain.model.Pet;
 import com.lny.petservice.domain.port.service.PetServicePort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,6 +46,9 @@ public class PetController {
     public ResponseEntity<PetResponseDto> createPet(@RequestBody @Valid PetRequestDto petRequestDto) {
         log.info("Creating new Pet : {}", petRequestDto);
         Pet pet = petServicePort.createPet(petAppMapper.toDomain(petRequestDto));
-        return ResponseEntity.ok(petAppMapper.toResponseDto(pet));
+        PetResponseDto petResponseDto = petAppMapper.toResponseDto(pet);
+        return ResponseEntity.status(HttpStatus.CREATED).body(petResponseDto);
     }
+
+    // TODO: add delete and put/patch methods
 }
