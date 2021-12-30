@@ -8,6 +8,7 @@ import com.lny.petservice.app.adapter.dto.response.PetResponseDto;
 import com.lny.petservice.app.adapter.mapper.FoodAppMapper;
 import com.lny.petservice.app.adapter.mapper.PetAppMapper;
 import com.lny.petservice.app.adapter.mapper.PetAppMapperImpl;
+import com.lny.petservice.common.error.ErrorResponse;
 import com.lny.petservice.common.error.handler.GlobalExceptionHandler;
 import com.lny.petservice.domain.model.Food;
 import com.lny.petservice.domain.model.Pet;
@@ -36,6 +37,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @ExtendWith(MockitoExtension.class)
@@ -53,6 +55,7 @@ class PetControllerTest {
 
     private JacksonTester<PetResponseDto> jsonPetResponse;
     private JacksonTester<List<PetResponseDto>> jsonPetResponseList;
+    private JacksonTester<ErrorResponse> jsonErrorResponse;
 
     @BeforeEach
     void setUp() {
@@ -151,6 +154,41 @@ class PetControllerTest {
         // then
         assertEquals(HttpStatus.CREATED.value(), response.getStatus(), "Fail to response a CREATED status");
         assertEquals(jsonPetResponse.write(petResponseDto).getJson(), response.getContentAsString(), "Fail to response a json string equals when create a Pet");
+    }
+
+    @Test
+    @DisplayName("Return BAD_REQUEST when using a invalid request param")
+    void returnBadRequestErrorWhenInvalidParamRequest() throws Exception {
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                "Invalid UUID string: ERROR_PARAM",
+                "IllegalArgumentException"
+        );
+
+        // when
+        MockHttpServletResponse response = mockMvc.perform(
+                        get("/pets/ERROR_PARAM" )
+                                .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        // then
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus(), "Fail to return Bad Request");
+        assertEquals(jsonErrorResponse.write(errorResponse).getJson(), response.getContentAsString(), "Fail to return a bad request error response");
+    }
+
+    @Test
+    @DisplayName("Return Unsupported Media Type with empty body response")
+    void returnErrorWhenInvalidMediaTypeRequest() throws Exception {
+
+        // when
+        MockHttpServletResponse response = mockMvc.perform(
+                        multipart("/pets" )
+                                .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        // then
+        assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), response.getStatus(), "Fail to return Unsupported Media Type");
+        assertEquals("", response.getContentAsString(), "Fail to return a body empty response");
     }
 
     // TODO: add test for others methods

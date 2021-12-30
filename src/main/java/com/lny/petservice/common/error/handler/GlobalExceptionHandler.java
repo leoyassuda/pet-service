@@ -23,11 +23,10 @@ public class GlobalExceptionHandler {
                 new ErrorResponse(cause.getMessage(), "InvalidOperation"), HttpStatus.PRECONDITION_FAILED);
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponse> handleException(RuntimeException cause) {
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleException(IllegalArgumentException cause) {
         return new ResponseEntity<>(
-                new ErrorResponse(cause.getMessage(), "RuntimeException"),
-                HttpStatus.INTERNAL_SERVER_ERROR);
+                new ErrorResponse(cause.getMessage(), "IllegalArgumentException"), HttpStatus.BAD_REQUEST);
     }
 
 }
