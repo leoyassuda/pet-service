@@ -19,8 +19,7 @@ import java.util.UUID;
 
 
 @RequiredArgsConstructor
-public class PetDbRepositoryImpl implements PetRepositoryPersistPort, PetRepositoryRetrievePort {
-
+public class PetDbRepositoryAdapter implements PetRepositoryPersistPort, PetRepositoryRetrievePort {
 
     private final PetReadRepository petReadRepository;
     private final PetWriteRepository petWriteRepository;

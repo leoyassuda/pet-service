@@ -20,7 +20,7 @@ import static java.util.UUID.randomUUID;
 @Slf4j
 @Repository
 @AllArgsConstructor
-public class PetInMemoryRepositoryImpl implements PetRepositoryPersistPort, PetRepositoryRetrievePort {
+public class PetInMemoryRepositoryAdapter implements PetRepositoryPersistPort, PetRepositoryRetrievePort {
 
     private PetInfraMapper petInfraMapper;
     private HashMap<UUID, PetEntity> petHashMap;
@@ -50,7 +50,7 @@ public class PetInMemoryRepositoryImpl implements PetRepositoryPersistPort, PetR
 
     @Override
     public List<Pet> getAll(int page) {
-        log.warn("Returning from memory, page is not implemented");
+        log.warn("Returning all values from memory, page is not implemented for memory adapter");
         ArrayList<PetEntity> petEntityArrayList = new ArrayList<>(petHashMap.values());
         return petInfraMapper.toDomain(petEntityArrayList);
     }
