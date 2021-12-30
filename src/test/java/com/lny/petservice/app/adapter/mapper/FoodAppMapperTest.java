@@ -70,7 +70,6 @@ class FoodAppMapperTest {
         assertNull(food.getPet());
     }
 
-    // TODO: Req to Domain - Set
     @Test
     @DisplayName("Return a converted domain list using Food Request list")
     void testFoodRequestListToDomainList() {

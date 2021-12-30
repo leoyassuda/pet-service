@@ -3,12 +3,13 @@ package com.lny.petservice.app.adapter.mapper;
 import com.lny.petservice.app.adapter.dto.request.FoodRequestDto;
 import com.lny.petservice.app.adapter.dto.response.FoodResponseDto;
 import com.lny.petservice.domain.model.Food;
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.Set;
 
-@Mapper
+@Mapper(injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface FoodAppMapper {
 
     @Mapping(target = "petResponseDto", ignore = true)

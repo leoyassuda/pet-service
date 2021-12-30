@@ -6,15 +6,12 @@ import com.lny.petservice.app.adapter.dto.response.FoodResponseDto;
 import com.lny.petservice.app.adapter.dto.response.PetResponseDto;
 import com.lny.petservice.domain.model.Food;
 import com.lny.petservice.domain.model.Pet;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.IndicativeSentencesGeneration;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
-import org.mockito.InjectMocks;
-import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
@@ -31,15 +28,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @IndicativeSentencesGeneration(separator = " -> ")
 class PetAppMapperTest {
 
-    @Spy
-    private static FoodAppMapper foodAppMapper;
+    private PetAppMapper petAppMapper;
 
-    @InjectMocks
-    private PetAppMapper petAppMapper = Mappers.getMapper(PetAppMapper.class);
-
-    @BeforeAll
-    static void setUp() {
-        foodAppMapper = Mockito.spy(Mappers.getMapper(FoodAppMapper.class));
+    @BeforeEach
+    void setUp() {
+        FoodAppMapper foodAppMapper = Mappers.getMapper(FoodAppMapper.class);
+        petAppMapper = new PetAppMapperImpl(foodAppMapper);
     }
 
     @Test
@@ -129,7 +123,7 @@ class PetAppMapperTest {
                 .build();
     }
 
-    private PetRequestDto buildPetRequest(){
+    private PetRequestDto buildPetRequest() {
         return PetRequestDto.builder()
                 .id(UUID.randomUUID())
                 .name("Doggo " + (int) (Math.random() * (30 - 1 + 1) + 1))
