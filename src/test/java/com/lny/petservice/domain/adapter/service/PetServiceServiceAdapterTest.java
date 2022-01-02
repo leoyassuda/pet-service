@@ -1,5 +1,7 @@
 package com.lny.petservice.domain.adapter.service;
 
+import com.lny.petservice.common.error.InvalidOperationException;
+import com.lny.petservice.common.error.ResourceNotFoundException;
 import com.lny.petservice.domain.model.Food;
 import com.lny.petservice.domain.model.Pet;
 import com.lny.petservice.domain.port.repository.PetRepositoryPersistPort;
@@ -15,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
@@ -111,6 +114,40 @@ class PetServiceServiceAdapterTest {
 
         // then
         assertEquals("Azulão", petAzulao.getName(), "Fail to rename pet");
+    }
+
+    @Test
+    @DisplayName("Throws a ResourceNotFoundException when find by id to change the pet name")
+    void canThrowsResourceNotFoundExceptionWhenRepoReturnOptionalEmpty() {
+        // given
+        given(petRepositoryRetrievePort.findById(petId))
+                .willReturn(Optional.empty());
+
+        // when
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> petServiceServiceAdapter.changeName(petId, "Amarelão"));
+
+        // then
+        assertEquals("Pet not fount - id=" + petId, exception.getMessage(), "Fail to throws a ResourceNotFoundException when repository returns a optional empty");
+    }
+
+    @Test
+    @DisplayName("Throws a InvalidOperationException when error save in repository interface")
+    void canThrowsInvalidOperationExceptionWhenRepositoryOccursSomeError() {
+        Pet pet = this.petDomainBuild(petId);
+        Pet petNewName = this.petDomainBuild(petId);
+        petNewName.setName("Azulão");
+
+        // given
+        given(petRepositoryRetrievePort.findById(petId))
+                .willReturn(Optional.of(pet));
+        given(petRepositoryPersistPort.save(any(Pet.class)))
+                .willThrow(InvalidOperationException.class);
+
+        // when
+        InvalidOperationException exception = assertThrows(InvalidOperationException.class, () -> petServiceServiceAdapter.changeName(petId, "Amarelão"));
+
+        // then
+        assertEquals("Error to change pet name", exception.getMessage(), "Fail to throws a InvalidOperationException when some error occurs in repository");
     }
 
     @Test
