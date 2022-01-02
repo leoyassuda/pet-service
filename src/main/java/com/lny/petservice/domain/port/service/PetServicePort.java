@@ -9,7 +9,7 @@ public interface PetServicePort {
 
     int countFood(UUID id);
 
-    boolean changeName(UUID id, String newName);
+    Pet changeName(UUID id, String newName);
 
     List<Pet> listPets(int page);
 

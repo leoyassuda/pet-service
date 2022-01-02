@@ -74,7 +74,6 @@ class PetControllerTest {
     @DisplayName("Return Ok and a valid pet response when retrieve by Id")
     void canRetrieveByIdWhenExists() throws Exception {
 
-
         PetResponseDto petResponseDto = this.petResponseBuild();
 
         // given
