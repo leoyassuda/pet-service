@@ -12,14 +12,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,7 +36,8 @@ class PetServiceServiceAdapterTest {
     private final UUID petId = UUID.fromString("c43b78aa-8c89-42fb-a647-766847536fb6");
 
     @Test
-    void getPetById() {
+    @DisplayName("Return a valid Pet when find by Id")
+    void canRetrievePetById() {
         // given
         given(petRepositoryRetrievePort.findById(any(UUID.class)))
                 .willReturn(Optional.of(this.petDomainBuild(petId)));
@@ -53,7 +51,8 @@ class PetServiceServiceAdapterTest {
     }
 
     @Test
-    void createPet() {
+    @DisplayName("Return a new Pet with valid Id when call create pet")
+    void canRetrieveNewPetAfterCreateWithSuccess() {
         Pet pet = this.petDomainBuild(null);
         pet.setId(null);
 
@@ -70,7 +69,8 @@ class PetServiceServiceAdapterTest {
     }
 
     @Test
-    void countFood() {
+    @DisplayName("Return a int with total of foods a pet is associated")
+    void canRetrieveTheNumberOfFoodAssociatedAPet() {
         Set<Food> foodSet = new HashSet<>();
         foodSet.add(this.foodDomainBuild());
         foodSet.add(this.foodDomainBuild());
@@ -94,7 +94,8 @@ class PetServiceServiceAdapterTest {
     }
 
     @Test
-    void changeName() {
+    @DisplayName("Return a Pet with new name when call change name method")
+    void canReturnAPetWithNewNameWhenChangeName() {
         Pet pet = this.petDomainBuild(petId);
         Pet petNewName = this.petDomainBuild(petId);
         petNewName.setName("Azulão");
@@ -113,7 +114,22 @@ class PetServiceServiceAdapterTest {
     }
 
     @Test
-    void listPets() {
+    @DisplayName("Return a valid list of pets when call list all pets")
+    void canListPets() {
+        Pet pet1 = this.petDomainBuild(null);
+        Pet pet2 = this.petDomainBuild(null);
+        Pet pet3 = this.petDomainBuild(null);
+        List<Pet> petList = Arrays.asList(pet1, pet2, pet3);
+
+        // given
+        given(petRepositoryRetrievePort.getAll(anyInt()))
+                .willReturn(petList);
+
+        // when
+        List<Pet> pets = petServiceServiceAdapter.listPets(1);
+
+        // then
+        assertEquals(3, pets.size(), "Fail to return 3 pets in list");
     }
 
     private Pet petDomainBuild(UUID id) {
