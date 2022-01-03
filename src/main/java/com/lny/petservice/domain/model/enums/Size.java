@@ -1,6 +1,6 @@
 package com.lny.petservice.domain.model.enums;
 
-import java.util.stream.Stream;
+import java.util.List;
 
 public enum Size {
     SMALL("Small"),
@@ -17,7 +17,7 @@ public enum Size {
         return value;
     }
 
-    public static Stream<Size> stream() {
-        return Stream.of(Size.values());
+    public static List<Size> list() {
+        return List.of(Size.values());
     }
 }
