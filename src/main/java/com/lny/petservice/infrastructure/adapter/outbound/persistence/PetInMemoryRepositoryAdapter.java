@@ -8,6 +8,7 @@ import com.lny.petservice.infrastructure.mapper.PetInfraMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import java.util.UUID;
 import static java.util.UUID.randomUUID;
 
 @Slf4j
+@Transactional
 @Repository
 @AllArgsConstructor
 public class PetInMemoryRepositoryAdapter implements PetRepositoryPersistPort, PetRepositoryRetrievePort {
@@ -43,6 +45,13 @@ public class PetInMemoryRepositoryAdapter implements PetRepositoryPersistPort, P
 
     @Override
     public Optional<Pet> findById(UUID id) {
+        PetEntity petEntity = petHashMap.get(id);
+        if (petEntity == null) return Optional.empty();
+        return Optional.of(petInfraMapper.toDomainSkipFood(petEntity));
+    }
+
+    @Override
+    public Optional<Pet> findByIdWithFoods(UUID id) {
         PetEntity petEntity = petHashMap.get(id);
         if (petEntity == null) return Optional.empty();
         return Optional.of(petInfraMapper.toDomain(petEntity));

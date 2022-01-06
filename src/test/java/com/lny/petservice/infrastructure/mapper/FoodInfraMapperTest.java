@@ -59,7 +59,7 @@ class FoodInfraMapperTest {
 
         FoodEntity foodEntity = this.buildFoodEntity();
 
-        Food foodDomain =foodInfraMapper.toDomain(foodEntity);
+        Food foodDomain = foodInfraMapper.toDomain(foodEntity);
 
         assertEquals(foodEntity.getId(), foodDomain.getId());
         assertEquals(foodEntity.getName(), foodDomain.getName());
@@ -92,7 +92,7 @@ class FoodInfraMapperTest {
                 .build();
     }
 
-    private FoodEntity buildFoodEntity(){
+    private FoodEntity buildFoodEntity() {
         return FoodEntity.builder()
                 .id(UUID.randomUUID())
                 .name("Snack " + (int) (Math.random() * (30 - 1 + 1) + 1))

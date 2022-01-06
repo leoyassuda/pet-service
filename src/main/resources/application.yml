@@ -54,13 +54,69 @@ springdoc:
   api-docs:
     path: /api-docs
 
-liquibase:
-  enabled: ${LIQUIBASE_ENABLED:true}
-  change-log: db/changelog/db-changelog.yaml
-  default-schema: public
-  liquibase-schema: public
-  url: jdbc:postgresql://${DB_CONNECTION_IP:localhost}:${DB_CONNECTION_PORT:5445}/petdb?currentSchema=public
+#liquibase:
+#  enabled: ${LIQUIBASE_ENABLED:true}
+#  change-log: db/changelog/db-changelog.yaml
+#  default-schema: public
+#  liquibase-schema: public
+#  url: jdbc:postgresql://${DB_CONNECTION_IP:localhost}:${DB_CONNECTION_PORT:5445}/petdb?currentSchema=public
 
 data:
   repository:
     pageSize: 10
+
+---
+name: test-YAML
+spring:
+  config:
+    activate:
+      on-profile: test
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default-schema: public
+  test:
+    database:
+      replace: none
+  liquibase:
+    enabled: ${LIQUIBASE_ENABLED:true}
+    change-log: classpath:db/changelog/db-changelog.yaml
+    default-schema: public
+    liquibase-schema: public
+    url: jdbc:postgresql://${DB_CONNECTION_IP:localhost}:${DB_CONNECTION_PORT:5432}/petdb?currentSchema=public
+    user: ${DB_CONNECTION_USERNAME:tester}
+    password: ${DB_CONNECTION_PASSWORD:test1234}
+    driver-class-name: org.postgresql.Driver
+logging:
+  level:
+    liquibase: INFO
+
+datasource:
+  write:
+    jdbc-url: jdbc:postgresql://${DB_CONNECTION_IP:localhost}:${DB_CONNECTION_WRITE_PORT:5432}/petdb?currentSchema=public
+    username: ${DB_CONNECTION_USERNAME:tester}
+    password: ${DB_CONNECTION_PASSWORD:test1234}
+    platform: postgresql
+    hikari:
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      maximum-pool-size: 10
+      minimum-idle: 5
+      pool-name: WriteHikariPool
+      schema: public
+  read:
+    jdbc-url: jdbc:postgresql://${DB_CONNECTION_IP:localhost}:${DB_CONNECTION_READ_PORT:5432}/petdb?currentSchema=public
+    username: ${DB_CONNECTION_USERNAME:tester}
+    password: ${DB_CONNECTION_PASSWORD:test1234}
+    platform: postgresql
+    hikari:
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      maximum-pool-size: 10
+      minimum-idle: 5
+      pool-name: WriteHikariPool
+      schema: public

@@ -59,7 +59,7 @@ class FoodAppMapperTest {
 
     @Test
     @DisplayName("Return equals values between Food Domain and Food Response using MapStruct mapper")
-    void testRequestFoodObjectToDomainObject(){
+    void testRequestFoodObjectToDomainObject() {
         FoodRequestDto foodRequestDto = this.buildFoodRequest();
 
         Food food = foodAppMapper.toDomain(foodRequestDto);

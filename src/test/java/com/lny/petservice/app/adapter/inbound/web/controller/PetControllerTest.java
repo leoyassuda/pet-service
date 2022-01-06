@@ -166,7 +166,7 @@ class PetControllerTest {
 
         // when
         MockHttpServletResponse response = mockMvc.perform(
-                        get("/pets/ERROR_PARAM" )
+                        get("/pets/ERROR_PARAM")
                                 .accept(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse();
 
@@ -181,7 +181,7 @@ class PetControllerTest {
 
         // when
         MockHttpServletResponse response = mockMvc.perform(
-                        multipart("/pets" )
+                        multipart("/pets")
                                 .accept(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse();
 

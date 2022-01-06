@@ -40,9 +40,9 @@ public class FoodEntity implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pet_id")
-    @ToString.Exclude
     private PetEntity petEntity;
 
     @Override

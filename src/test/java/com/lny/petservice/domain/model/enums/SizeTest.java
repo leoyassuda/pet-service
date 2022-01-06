@@ -1,6 +1,5 @@
 package com.lny.petservice.domain.model.enums;
 
-import com.lny.petservice.common.error.InvalidOperationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.IndicativeSentencesGeneration;
 import org.junit.jupiter.api.Test;
@@ -11,7 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Test Domain Size Enum")

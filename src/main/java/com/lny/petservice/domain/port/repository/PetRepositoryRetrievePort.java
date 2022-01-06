@@ -10,5 +10,7 @@ public interface PetRepositoryRetrievePort {
 
     Optional<Pet> findById(UUID id);
 
+    Optional<Pet> findByIdWithFoods(UUID id);
+
     List<Pet> getAll(int page);
 }

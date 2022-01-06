@@ -10,11 +10,11 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -50,9 +50,9 @@ public class PetEntity implements Serializable {
     @Column(name = "size")
     private Size size;
 
-    @OneToMany(mappedBy = "petEntity", fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("user")
     @ToString.Exclude
+    @JsonIgnoreProperties("user")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "petEntity")
     private Set<FoodEntity> foodEntitySet = new HashSet<>();
 
     @Override
