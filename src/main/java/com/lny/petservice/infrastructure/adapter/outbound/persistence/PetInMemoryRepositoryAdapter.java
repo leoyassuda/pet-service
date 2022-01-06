@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +48,9 @@ public class PetInMemoryRepositoryAdapter implements PetRepositoryPersistPort, P
     public Optional<Pet> findById(UUID id) {
         PetEntity petEntity = petHashMap.get(id);
         if (petEntity == null) return Optional.empty();
-        return Optional.of(petInfraMapper.toDomainSkipFood(petEntity));
+        if (CollectionUtils.isEmpty(petEntity.getFoodEntitySet()))
+            return Optional.of(petInfraMapper.toDomainSkipFood(petEntity));
+        return Optional.of(petInfraMapper.toDomain(petEntity));
     }
 
     @Override
