@@ -1,16 +1,14 @@
 # Pet-Service
 
-A project to study hexagonal architecture, some kubernetes features using a spring-boot application and postgres as a
-write/read mode.
+This project aims to study hexagonal architecture and explore some Kubernetes features using a Spring Boot application with PostgreSQL in read/write modes.
 
-For this propose, it will be created a deployment with some pods and avoiding a lock database caused by the Liquibase
-framework. It happens because liquibase inside the application start migrations tasks and the first one is lock our
-database, in parallel others pods starts the same steps and could throw an exception or falling through the deployment
-error.
+### Description
+The project includes the creation of a deployment with multiple pods, avoiding database locks caused by the Liquibase framework. Liquibase, when starting within the application, initiates migration tasks, and the first action is to lock the database. Since multiple pods start the same steps in parallel, this can cause exceptions or deployment failures.
 
-Here the focus is on the architecture.
+The main focus of this project is on the architecture.
 
-Look in the resource folder, all the migration files, fell free to create yours or modifying for tests.
+### Resources
+In the resources folder, you will find all migration files. Feel free to create your own files or modify the existing ones for testing.
 
 ## Tech Stack
 
